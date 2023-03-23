@@ -1,28 +1,27 @@
-import ContactForm from './ContactForm';
-import ContactFilter from './ContactFilter';
-import ContactList from './ContactList';
+import { Routes, Route } from 'react-router-dom';
+import { lazy } from 'react';
+import SharedLayout from './SharedLayout';
+const Phonebook = lazy(() => import('../Pages/Phonebook'));
+const Home = lazy(() => import('../Pages/Home'));
+const NotFound = lazy(() => import('../Pages/notFaund/notFaund'));
+// const SharedLayout = lazy(() => import('./SharedLayout/SharedLayout'));
+const AuthForm = lazy(() => import('../Pages/AuthForm/AuthForm'));
+const LoginForm = lazy(() => import('../Pages/LoginForm'));
 
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchContacts } from '../redux/contactSlice';
-
-export function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
+export const App = () => {
   return (
-    <div className="container">
-      <h1>Phonebook</h1>
-
-      <ContactForm />
-      <h2>Contacts</h2>
-
-      <ContactFilter />
-      <ContactList />
+    <div>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path="phonebook" element={<Phonebook />} />
+          <Route path="authform" element={<AuthForm />} />
+          <Route path="loginform" element={<LoginForm />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;

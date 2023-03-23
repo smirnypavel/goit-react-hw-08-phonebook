@@ -29,7 +29,7 @@ const ContactList = () => {
             <>
               {item.name}
               <br />
-              {item.phone}
+              {item.number}
             </>
             <button
               type="button"

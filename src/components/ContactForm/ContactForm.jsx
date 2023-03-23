@@ -10,28 +10,31 @@ export const ContactForm = () => {
   const contacts = useSelector(getContacts);
   const filter = contacts.items;
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [number, setNumber] = useState('');
+
   const handleChange = evt => {
     const { name, value } = evt.target;
-    name === 'name' ? setName(value) : setPhone(value);
+    name === 'name' ? setName(value) : setNumber(value);
   };
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    const isContactExist = filter.find(
-      contact =>
-        contact.name.toLowerCase() === name.toLowerCase() ||
-        contact.phone === phone
-    );
+    const isContactExist =
+      filter.length > 0 &&
+      filter.find(
+        contact =>
+          contact.name.toLowerCase() === name.toLowerCase() ||
+          contact.number === number
+      );
     if (isContactExist) {
-      Notiflix.Notify.failure(`${name} ${phone} is already in contacts`);
+      Notiflix.Notify.failure(`${name} ${number} is already in contacts`);
       setName('');
-      setPhone('');
+      setNumber('');
       return;
     }
-    dispatch(addContact({ name, phone }));
+    dispatch(addContact({ name, number }));
     setName('');
-    setPhone('');
+    setNumber('');
   };
 
   return (
@@ -49,7 +52,7 @@ export const ContactForm = () => {
       </label>
       <label className={styles.label}>
         <input
-          value={phone}
+          value={number}
           onChange={handleChange}
           type="tel"
           name="phone"

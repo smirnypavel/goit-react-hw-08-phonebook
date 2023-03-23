@@ -1,29 +1,41 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-const BASE_URL = 'https://64198550f398d7d95d41c7b5.mockapi.io/contacts';
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
+// const BASE_URL = 'https://64198550f398d7d95d41c7b5.mockapi.io/contacts';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchContacts',
-  async () => {
-    const response = await axios.get(BASE_URL);
-    return response.data;
+  async credentials => {
+    try {
+      const { data } = await axios.get('/contacts', credentials);
+      return data;
+    } catch (error) {
+      throw Error(`Error fetching contacts: ${error.message}`);
+    }
   }
 );
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
-  async contact => {
-    const response = await axios.post(BASE_URL, contact);
-    return response.data;
+  async credentials => {
+    try {
+      const { data } = await axios.post('/contacts', credentials);
+      return data;
+    } catch (error) {
+      throw Error(`Error fetching contacts: ${error.message}`);
+    }
   }
 );
 
 export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async id => {
-    await axios.delete(`${BASE_URL}/${id}`);
-    return id;
+    try {
+      await axios.delete(`/contacts/${id}`);
+      return id;
+    } catch (error) {
+      throw Error(`Error deleting contact: ${error.message}`);
+    }
   }
 );
 
@@ -34,7 +46,6 @@ const contactsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.pending, state => {
