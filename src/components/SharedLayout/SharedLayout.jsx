@@ -7,8 +7,6 @@ import Navigation from 'components/Navigation/Navigation';
 import UserMenu from 'components/UesrMenu/UserMenu';
 import { useSelector } from 'react-redux';
 
-// import Loader from 'components/Loader/Loader';
-
 export const SharedLayout = () => {
   const isLoggedIn = useSelector(getIsloggedIn);
   return (
